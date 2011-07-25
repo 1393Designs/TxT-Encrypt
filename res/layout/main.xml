@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	
+	<TextView  android:id="@+id/textView"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:textSize="17dp" />
+		
+	<EditText android:id="@+id/textBox"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/textView"
+		android:inputType="textCapSentences|textMultiLine" />
+		
+	<Button android:id="@+id/okayButton"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_below="@id/textBox"
+		android:text="Encrypt w/o key" />
+	
+	<Button android:id="@+id/wPassButton"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Encrypt with key" 
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_toRightOf="@id/okayButton"
+		android:layout_below="@id/textBox"/>
+
+	<TextView  android:id="@+id/textView2"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:textSize="17dp"		
+		android:layout_below="@id/okayButton"/>
+		
+	<EditText android:id="@+id/textBox2"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:inputType="textCapSentences|textMultiLine" 
+		android:layout_below="@id/textView2"/>
+		
+	<Button android:id="@+id/clearDecrypt"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Clear Decrypted Text" 
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_below="@id/textBox2"/>
+		
+</RelativeLayout>
+
