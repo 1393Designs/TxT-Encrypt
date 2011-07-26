@@ -69,6 +69,7 @@ public class txtencrypt extends Activity
         setContentView(R.layout.main);
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		//Will check if there's a preference item to choose how to export the message
 		if(! sharedPrefs.contains("export"))
 		{
 			editor = sharedPrefs.edit(); 
@@ -76,6 +77,7 @@ public class txtencrypt extends Activity
 			editor.commit(); 
 		}
 		
+		//Presents the EULA dialog only once (during first boot)
 		if(!sharedPrefs.getBoolean("EULA", false))
 			presentEULA();
 			
@@ -98,6 +100,7 @@ public class txtencrypt extends Activity
 			{
 				origString = et.getText().toString();
 				
+				//Will first encrypt the string before deciding what to do with it
 				try
 				{
 					enString = txtencrypt.encrypt("hello", origString);
@@ -134,6 +137,7 @@ public class txtencrypt extends Activity
 					}
 				});
 				
+				//Takes the user-inputted key and set that as the key for the encryption
 				Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 				okay_button.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
@@ -144,9 +148,7 @@ public class txtencrypt extends Activity
 						origString = et.getText().toString();
 				
 						try
-						{
-							enString = txtencrypt.encrypt(key_name, origString);
-						}
+						{ enString = txtencrypt.encrypt(key_name, origString); }
 						catch(Exception e)
 						{}
 						
@@ -177,6 +179,7 @@ public class txtencrypt extends Activity
 		Intent intent = getIntent();
 		if (intent.getData() != null)
 		{
+			//Check to see if the app was open via Kik
 			if(intent.getScheme().compareTo("kik-com.designatum1393.txtencrypt") == 0){
 				try{
 					KikData data = KikClient.getDataFromIntent(getIntent());
@@ -187,6 +190,7 @@ public class txtencrypt extends Activity
 			}
 			else
 			{
+				//If not, it will assume it was open via an email attachment
 				try{
 					InputStream attachment = getContentResolver().openInputStream(intent.getData());
 					InputStreamReader reader = new InputStreamReader(attachment);
@@ -197,6 +201,7 @@ public class txtencrypt extends Activity
 				} catch(Exception e) {}	
 			}
 			
+			//Dialog will show up prompting user for the key. If there is no key, it will default to the app's key
 			final Dialog dialog = new Dialog(txtencrypt.this);
 			dialog.setContentView(R.menu.decryptdialog);
 			dialog.setTitle("Decrypting...");
@@ -256,6 +261,7 @@ public class txtencrypt extends Activity
 		ed.show();
 	}
 
+	//Inflates menu.xml to create the menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -263,7 +269,8 @@ public class txtencrypt extends Activity
 		inflater.inflate(R.menu.menu, menu);
 		return true;
 	}
-
+	
+	//Chooses what to do when a menu item is selected
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item)
 	{
@@ -279,6 +286,7 @@ public class txtencrypt extends Activity
 		return super.onMenuItemSelected(featureId, item);
 	}
 	
+	//Creates the "About" dialog when selected
 	public void aboutDialog(){
 		final TextView message = new TextView(this);
 		
@@ -312,6 +320,7 @@ public class txtencrypt extends Activity
 
 	}
 	
+	
 	public void exportDialog()
 	{
 		final CharSequence[] choices = {"Kik Messenger", "Email Attachment"};
@@ -342,13 +351,13 @@ public class txtencrypt extends Activity
 			}
 		});
 		exporter.show();
-	
 	}
 	
+	//Will create the Kik message and send it to Kik Messenger
 	private void kikTxt()
 	{
 		KikMessage message = new KikMessage("com.designatum1393.txtencrypt");
-		message.setAndroidDownloadUri("market://details?id=com.designatum_1393.txtencrypt");
+		message.setAndroidDownloadUri("market://details?id=com.designatum_1378.txt_encrypt");
 		message.setFallbackUri("http://1393Designatum.com/txt_encrypt.html");
 		message.setTitle("Message: ");
 		message.setText(enString);
@@ -356,6 +365,7 @@ public class txtencrypt extends Activity
 	
 	}
 	
+	//Initializes the .txtencrypt file and stores it into the sdcard temporarily then creates an email intent to send as an attachment
 	private void emailTxt()
 	{
 		try{
